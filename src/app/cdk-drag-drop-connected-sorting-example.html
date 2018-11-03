@@ -1,0 +1,49 @@
+<h1>CLI Command Builder</h1>
+<div class="example-container">
+
+  <div *ngIf="!tool">
+    <h2>Tools</h2>
+    <div cdkDropList #toolsDiv="cdkDropList" [cdkDropListData]="tools" [cdkDropListConnectedTo]="[commandDiv]" class="example-list">
+      <div class="example-box" *ngFor="let tool of tools" cdkDrag>{{tool.tool}} </div>
+    </div>
+  </div>
+
+  <div *ngIf="tool && commandIndex === null">
+    <h2>Commands</h2>
+    <div cdkDropList [cdkDropListData]="tool.commands" [cdkDropListConnectedTo]="[commandDiv]" class="example-list">
+      <div class="example-box" *ngFor="let command of tool.commands" cdkDrag>{{command.command}} </div>
+    </div>
+  </div>
+
+  <div *ngIf="tool && commandIndex !== null">
+    <h2>Options (multi)</h2>
+    <div cdkDropList [cdkDropListData]="tool.commands[commandIndex].options" [cdkDropListConnectedTo]="[commandDiv]"
+      class="example-list">
+      <div class="example-box" *ngFor="let option of tool.commands[commandIndex].options" cdkDrag>{{option.option}}
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="example-container">
+  <h2>Command</h2>
+
+  <div cdkDropList #commandDiv="cdkDropList" class="example-list" (cdkDropListDropped)="dropToken($event)"
+    [cdkDropListConnectedTo]="[terminalDiv]">
+    <div cdkDrag>
+
+      <div class="example-box">{{tool ? tool.tool : ''}}</div>
+      <div *ngIf="commandIndex !== null" class="example-box">{{tool.commands[commandIndex].command}}</div>
+      <div *ngIf="optionIndex.length > 0" class="example-box"><span>-{{tool.commands[commandIndex].options[optionIndex].option}}</span>
+        <span *ngIf="tool.commands[commandIndex].options[optionIndex].values.length > 0">
+          =<select>
+            <option *ngFor="let value of tool.commands[commandIndex].options[optionIndex].values" [value]="value">{{value}}</option>
+          </select>
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+<div #terminalDiv="cdkDropList" class="terminal" cdkDropList (cdkDropListDropped)="dropCommand($event)">
+  <div *ngFor="let cmd of terminalCommands">{{cmd}}</div>
+</div>
