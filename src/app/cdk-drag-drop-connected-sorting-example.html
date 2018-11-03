@@ -34,9 +34,9 @@
 
       <div class="example-box">{{tool ? tool.tool : ''}}</div>
       <div *ngIf="commandIndex !== null" class="example-box">{{tool.commands[commandIndex].command}}</div>
-      <div *ngIf="optionIndex.length > 0" class="example-box"><span>-{{tool.commands[commandIndex].options[optionIndex].option}}</span>
+      <div *ngFor="let optionIndex of optionIndexes" class="example-box"><span>-{{tool.commands[commandIndex].options[optionIndex].option}}</span>
         <span *ngIf="tool.commands[commandIndex].options[optionIndex].values.length > 0">
-          =<select>
+          =<select [(ngModel)]="tool.commands[commandIndex].options[optionIndex].currentValue">
             <option *ngFor="let value of tool.commands[commandIndex].options[optionIndex].values" [value]="value">{{value}}</option>
           </select>
         </span>
@@ -47,3 +47,4 @@
 <div #terminalDiv="cdkDropList" class="terminal" cdkDropList (cdkDropListDropped)="dropCommand($event)">
   <div *ngFor="let cmd of terminalCommands">{{cmd}}</div>
 </div>
+<pre>{{ tool | json}}</pre>

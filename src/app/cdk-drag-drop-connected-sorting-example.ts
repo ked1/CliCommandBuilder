@@ -14,7 +14,7 @@ export class CdkDragDropConnectedSortingExample {
 
   tool: tool;
   commandIndex: number = null;
-  optionIndex: number[] = [];
+  optionIndexes: number[] = [];
 
   terminalCommands: string[] = [];
 
@@ -62,7 +62,7 @@ export class CdkDragDropConnectedSortingExample {
     if (droppedItem.tool) {
       this.tool = droppedItem;
       this.commandIndex = null;
-      this.optionIndex = [];
+      this.optionIndexes = [];
     }
     if (droppedItem.command) {
       console.log('dropped command');
@@ -70,17 +70,25 @@ export class CdkDragDropConnectedSortingExample {
     }
     if (droppedItem.option) {
       console.log('dropped option');
-      this.optionIndex.push(event.previousIndex);
+      this.optionIndexes.push(event.previousIndex);
     }
   }
 
   dropCommand(event: CdkDragDrop<any[]>) {
+    let options = '';
+    this.optionIndexes.forEach(i => {
+      let option = this.tool.commands[this.commandIndex].options[i];
+      options += ' --' + option.option;
+      if (option.currentValue) {
+        options += '=' + option.currentValue;
+      }
+    });
     this.terminalCommands.push(
-      `${this.tool.tool} ${this.tool.commands[this.commandIndex].command}`
+      `${this.tool.tool} ${this.tool.commands[this.commandIndex].command} ${options}`
     );
     this.tool = null;
     this.commandIndex = null;
-    this.optionIndex = [];
+    this.optionIndexes = [];
   }
 }
 
@@ -101,4 +109,5 @@ export class option {
   description: string;
   short?: string;
   values: string[];
+  currentValue?: string;
 }
