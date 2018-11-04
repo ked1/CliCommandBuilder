@@ -21,6 +21,8 @@ export class CommandBuilder {
 
   terminalCommands: string[] = [];
 
+  snippets: string[] = [];
+
   tools: tool[] = [
     {
       tool: 'git',
@@ -89,20 +91,34 @@ export class CommandBuilder {
   }
 
   dropCommand(event: CdkDragDrop<any[]>) {
-    let options = '';
-    this.optionIndexes.forEach(i => {
-      let option = this.tool.commands[this.commandIndex].options[i];
-      options += ' --' + option.option;
-      if (option.currentValue) {
-        options += '=' + option.currentValue;
-      }
-    });
-    this.terminalCommands.push(
-      `${this.tool.tool} ${this.tool.commands[this.commandIndex].command} ${options}`
-    );
-    this.tool = null;
-    this.commandIndex = null;
-    this.optionIndexes = [];
+    console.log('dropcommand', event);
+    if (event.previousContainer.id === 'cdk-drop-list-1') {
+      // snippet
+      this.terminalCommands.push(event.previousContainer.data[event.previousIndex]);
+    } else {
+      // configured command
+      let options = '';
+      this.optionIndexes.forEach(i => {
+        let option = this.tool.commands[this.commandIndex].options[i];
+        options += ' --' + option.option;
+        if (option.currentValue) {
+          options += '=' + option.currentValue;
+        }
+      });
+      this.terminalCommands.push(
+        `${this.tool.tool} ${this.tool.commands[this.commandIndex].command} ${options}`
+      );
+      this.tool = null;
+      this.commandIndex = null;
+      this.optionIndexes = [];
+    }
+  }
+
+  dropSnippet(event: CdkDragDrop<any[]>) {
+    const droppedSnippet = this.terminalCommands[event.previousIndex];
+    if (!this.snippets.some(x => x === droppedSnippet)) {
+      this.snippets.push(droppedSnippet);
+    }
   }
 
   private getRemainingOptions(): option[] {
