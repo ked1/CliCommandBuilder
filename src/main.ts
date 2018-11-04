@@ -1,15 +1,15 @@
 import './polyfills';
 
-import {HttpClientModule} from '@angular/common/http';
-import {NgModule} from '@angular/core';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {MatNativeDateModule} from '@angular/material';
-import {BrowserModule} from '@angular/platform-browser';
-import {platformBrowserDynamic} from '@angular/platform-browser-dynamic';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {DemoMaterialModule} from './material-module';
+import { HttpClientModule } from '@angular/common/http';
+import { NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatNativeDateModule } from '@angular/material';
+import { BrowserModule } from '@angular/platform-browser';
+import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { DemoMaterialModule } from './material-module';
 
-import {CdkDragDropConnectedSortingExample} from './app/cdk-drag-drop-connected-sorting-example';
+import { CommandBuilder } from './app/command-builder.component';
 
 @NgModule({
   imports: [
@@ -19,17 +19,16 @@ import {CdkDragDropConnectedSortingExample} from './app/cdk-drag-drop-connected-
     HttpClientModule,
     DemoMaterialModule,
     MatNativeDateModule,
-    ReactiveFormsModule,
+    ReactiveFormsModule
   ],
-  entryComponents: [CdkDragDropConnectedSortingExample],
-  declarations: [CdkDragDropConnectedSortingExample],
-  bootstrap: [CdkDragDropConnectedSortingExample],
+  entryComponents: [CommandBuilder],
+  declarations: [CommandBuilder],
+  bootstrap: [CommandBuilder],
   providers: []
 })
 export class AppModule {}
 
 platformBrowserDynamic().bootstrapModule(AppModule);
-
 
 /**  Copyright 2018 Google Inc. All Rights Reserved.
     Use of this source code is governed by an MIT-style license that

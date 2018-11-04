@@ -19,7 +19,7 @@
     <h2>Options (multi)</h2>
     <div cdkDropList [cdkDropListData]="tool.commands[commandIndex].options" [cdkDropListConnectedTo]="[commandDiv]"
       class="example-list">
-      <div class="example-box" *ngFor="let option of tool.commands[commandIndex].options" cdkDrag>{{option.option}}
+      <div class="example-box" *ngFor="let option of remainingOptions" cdkDrag>{{option.option}}
       </div>
     </div>
   </div>
@@ -45,6 +45,7 @@
   </div>
 </div>
 <div #terminalDiv="cdkDropList" class="terminal" cdkDropList (cdkDropListDropped)="dropCommand($event)">
-  <div *ngFor="let cmd of terminalCommands">{{cmd}}</div>
+  <div cdkDrag *ngFor="let cmd of terminalCommands">{{cmd}}</div>
 </div>
 <pre>{{ tool | json}}</pre>
+<pre>{{ optionIndexes | json}}</pre>

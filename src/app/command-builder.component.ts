@@ -1,20 +1,23 @@
 import { Component } from '@angular/core';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import { Options } from 'selenium-webdriver/firefox';
 
 /**
  * @title Drag&Drop connected sorting
  */
 @Component({
-  selector: 'cdk-drag-drop-connected-sorting-example',
-  templateUrl: 'cdk-drag-drop-connected-sorting-example.html',
-  styleUrls: ['cdk-drag-drop-connected-sorting-example.css']
+  selector: 'app-command-builder',
+  templateUrl: 'command-builder.component.html',
+  styleUrls: ['command-builder.component.css']
 })
-export class CdkDragDropConnectedSortingExample {
+export class CommandBuilder {
   constructor() {}
 
   tool: tool;
   commandIndex: number = null;
   optionIndexes: number[] = [];
+
+  remainingOptions: option[];
 
   terminalCommands: string[] = [];
 
@@ -67,10 +70,12 @@ export class CdkDragDropConnectedSortingExample {
     if (droppedItem.command) {
       console.log('dropped command');
       this.commandIndex = event.previousIndex;
+      this.remainingOptions = this.getRemainingOptions();
     }
     if (droppedItem.option) {
       console.log('dropped option');
       this.optionIndexes.push(event.previousIndex);
+      this.remainingOptions = this.getRemainingOptions();
     }
   }
 
@@ -89,6 +94,15 @@ export class CdkDragDropConnectedSortingExample {
     this.tool = null;
     this.commandIndex = null;
     this.optionIndexes = [];
+  }
+
+  private getRemainingOptions(): option[] {
+    let remainingOptions = [];
+    for (let i = 0; i < this.tool.commands[this.commandIndex].options.length; i++) {
+      if (this.optionIndexes.indexOf(i) === -1)
+        remainingOptions.push(this.tool.commands[this.commandIndex].options[i]);
+    }
+    return remainingOptions;
   }
 }
 
@@ -109,5 +123,6 @@ export class option {
   description: string;
   short?: string;
   values: string[];
+  active?: boolean = false;
   currentValue?: string;
 }
