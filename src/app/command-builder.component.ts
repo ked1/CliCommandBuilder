@@ -74,8 +74,17 @@ export class CommandBuilder {
     }
     if (droppedItem.option) {
       console.log('dropped option');
-      this.optionIndexes.push(event.previousIndex);
+      this.optionIndexes.push(this.translateDropIndex(event.previousIndex));
       this.remainingOptions = this.getRemainingOptions();
+    }
+  }
+
+  private translateDropIndex(index: number): number {
+    for (let i = 0; i < this.tool.commands[this.commandIndex].options.length; i++) {
+      const option = this.tool.commands[this.commandIndex].options[i];
+      if (option.option === this.remainingOptions[index].option) {
+        return i;
+      }
     }
   }
 
